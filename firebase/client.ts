@@ -1,5 +1,5 @@
 import firebase from 'firebase/compat/app'
-import { getDatabase, ref, set, push, onValue} from 'firebase/database'
+import { getDatabase, ref, set, get, push, onValue} from 'firebase/database'
 import { getAnalytics } from 'firebase/analytics'
 import 'firebase/compat/auth'
 
@@ -34,7 +34,7 @@ export const onAuthStateChanged = (onChange: Function) => {
 export const loginWithGithub = () => {
 	const provider = new firebase.auth.GithubAuthProvider()
 	return firebase.auth().signInWithPopup(provider)
-		.catch((error) => console.log(error))
+	// .catch((error) => TODO
 }
 
 export const logout = () => {
@@ -44,18 +44,24 @@ export const logout = () => {
 //  Todo list CRUD
 type crudTypes = {
 	uid: string,
-	id?: string,
+	id?: number | string,
 	todo?: {
 		text: string,
 		completed: boolean
 	},
 }
 
-export const addTodo = ({ todo, uid }: crudTypes) => {
-	const todoListRef = ref(db, `todo/${uid}`)
-	const newTodoRef = push(todoListRef)
-	const id = newTodoRef.key
-	return set(newTodoRef, { ...todo, id })
+export const addTodo = async ({ todo, uid }: crudTypes) => {
+	try{
+		const snapshot = await get(ref(db, `todo/${uid}`))
+		const data = snapshot.val()
+		const arrayData = data as { id: number }[];
+		const id = arrayData[arrayData.length - 1].id + 1 || 1
+
+		return set(ref(db, `todo/${uid}/${id}`), {...todo, id})
+	} catch (err) {
+      console.log('Unexpected error', err);
+	}
 }
 
 export const listenAllTodos = (uid: crudTypes["uid"], callback: Function) => {

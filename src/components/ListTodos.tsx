@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { listenAllTodos } from '../../firebase/client';
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import useUser from '@/hooks/useUser';
 
 import Image from 'next/image';
@@ -25,7 +26,11 @@ export default function ListTodos(): JSX.Element {
 			listenAllTodos(user.uid, setTodos)
 				.finally(() => setLoading({ ...loading, todos: false }))
 		}
-		if (user === null) setTodos(Object.values(JSON.parse(localStorage.getItem("todos") || "{}")))
+		if (user === null) {
+			setTodos(Object.values(JSON.parse(localStorage.getItem("todos") || "{}")))
+			setLoading({ ...loading, todos: false })
+		}
+
 	}, [user]);
 
 	function handleComplete(todo: any) {
@@ -60,33 +65,54 @@ export default function ListTodos(): JSX.Element {
 		</div>
 	)
 
+	function handleOnDragEnd(result: any) {
+		if (!result.destination) return;
+
+		const items = Array.from(todos);
+		const [reorderedItem] = items.splice(result.source.index, 1);
+		items.splice(result.destination.index, 0, reorderedItem);
+
+		setTodos(items);
+	}
+
 	return (
-		<ul className='flex flex-col gap-2 w-full'>
-			{
-				todos.map(todo => (
-					<li key={todo.id} className={`flex items-center gap-2 rounded px-6 py-3 justify-between transition-colors ${todo.completed ? "bg-green-500 " : "dark:bg-zinc-800 bg-white"}`}>
-						<div className='flex gap-4 w-full'>
-							<input type="checkbox"
-								className={`cursor-pointer w-6 aspect-square ${loading.completed ? "opacity-80" : ""}`}
-								defaultChecked={todo.completed}
-								disabled={loading.completed}
-								onChange={() => handleComplete(todo)} />
-							<p className='py-2 px-4 w-full' contentEditable={true}>{todo.text}</p>
-						</div>
-						<div className='flex gap-2 min-w-fit'>
-							<button
-								className={`px-2 py-2 rounded transition-all group hover:scale-105 hover:bg-red-600 ${loading.delete ? "opacity-80" : ""}`}
-								disabled={loading.delete}
-								onClick={() => handleDelete(todo)}>
-								<Image src={deleteIcon} alt="Delete" width={24} height={24} className='dark:invert group-hover:invert transition-all ' />
-							</button>
-							<button className='px-2 py-2 rounded transition-all hover:opacity-60'>
-								<Image src={reorderIcon} alt="Reorder" width={24} height={24} className='dark:invert' />
-							</button>
-						</div>
-					</li>
-				))
-			}
-		</ul >
+		<DragDropContext onDragEnd={handleOnDragEnd}>
+			<Droppable droppableId="characters">
+				{(provided) => (
+					<ul className="drag-sort-enable todo-list flex flex-col gap-2 w-full" {...provided.droppableProps} ref={provided.innerRef}>
+						{todos.map((todo, index) => {
+							return (
+								<Draggable key={todo.id} draggableId={todo.id + ""} index={index} >
+									{(provided) => (
+										<li key={todo.id} ref={provided.innerRef} {...provided.draggableProps} className={`flex items-center gap-2 rounded px-6 py-3 justify-between transition-colors ${todo.completed ? "bg-green-500 " : "dark:bg-zinc-800 bg-white"}`} id={"todo-" + todo.id}>
+											<div className='flex gap-4 w-full'>
+												<input type="checkbox"
+													className={`cursor-pointer w-6 aspect-square ${loading.completed ? "opacity-80" : ""}`}
+													defaultChecked={todo.completed}
+													disabled={loading.completed}
+													onChange={() => handleComplete(todo)} />
+												<p className={`py-2 px-4 w-full ${todo.completed ? "line-through" : ""}`} >{todo.text}</p>
+											</div>
+											<div className='flex gap-2 min-w-fit'>
+												<button
+													className={`px-2 py-2 rounded transition-all group hover:scale-105 hover:bg-red-600 ${loading.delete ? "opacity-80" : ""}`}
+													disabled={loading.delete}
+													onClick={() => handleDelete(todo)}>
+													<Image src={deleteIcon} alt="Delete" width={24} height={24} className='dark:invert group-hover:invert transition-all ' />
+												</button>
+												<div {...provided.dragHandleProps} className='px-2 py-2 rounded transition-all hover:opacity-60'>
+													<Image src={reorderIcon} alt="Reorder" width={24} height={24} className='dark:invert' id='reorder' />
+												</div>
+											</div>
+										</li>
+									)}
+								</Draggable>
+							);
+						})}
+						{provided.placeholder}
+					</ul>
+				)}
+			</Droppable>
+		</DragDropContext>
 	)
 }

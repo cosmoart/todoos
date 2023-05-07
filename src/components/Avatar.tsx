@@ -7,7 +7,7 @@ export default function Avatar(): JSX.Element {
 
 	function handleLogin() {
 		loginWithGithub()
-			.catch(err => console.log(err))
+		// .catch(err => TODO: handle error)
 	}
 
 	if (user === undefined) return (

@@ -16,6 +16,7 @@
 		"jsx-quotes": [1, "prefer-single"],
 		"react/react-in-jsx-scope": "off",
 		"react/prop-types": "off",
-		"no-unused-vars": 1
+		"no-unused-vars": 1,
+		"useUnknownInCatchVariables": false
 	}
 }
