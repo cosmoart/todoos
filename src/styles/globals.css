@@ -8,12 +8,10 @@
 	--background-end-rgb: 255, 255, 255;
 }
 
-@media (prefers-color-scheme: dark) {
-	:root {
-		--foreground-rgb: 255, 255, 255;
-		--background-start-rgb: 20, 20, 20;
-		--background-end-rgb: 20, 20, 20;
-	}
+:root.dark {
+	--foreground-rgb: 255, 255, 255;
+	--background-start-rgb: 20, 20, 20;
+	--background-end-rgb: 20, 20, 20;
 }
 
 body {
@@ -44,4 +42,94 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
 	background: rgb(121, 121, 121);
+}
+
+/* ========== SHIMMER ========= */
+
+.shimmerBG {
+	animation: shimmer 2s infinite linear forwards;
+	background: #ddd;
+	background: linear-gradient(
+		to right,
+		#f6f6f6 18%,
+		#999494 28%,
+		#f6f6f6 43%
+	);
+	background-size: 1200px 100%;
+}
+
+@-webkit-keyframes shimmer {
+	0% {
+		background-position: -100% 0;
+	}
+	100% {
+		background-position: 100% 0;
+	}
+}
+
+@keyframes shimmer {
+	0% {
+		background-position: -1200px 0;
+	}
+	100% {
+		background-position: 1200px 0;
+	}
+}
+
+/* ============= CHECKBOX ============ */
+
+input[type='checkbox'] {
+	--form-background: #fff;
+	--form-control-color: #000;
+	appearance: none;
+	background-color: transparent;
+	margin: 0;
+
+	border: 0.15em solid currentColor;
+	border-radius: 0.15em;
+	transform: translateY(-0.075em);
+
+	display: grid;
+	place-content: center;
+}
+
+input[type='checkbox']::before {
+	content: '';
+	width: 0.65em;
+	height: 0.65em;
+	clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+	transform: scale(0);
+	transform-origin: bottom left;
+	transition: 120ms transform ease-in-out;
+	box-shadow: inset 1em 1em var(--form-control-color);
+	background-color: CanvasText;
+}
+
+input[type='checkbox']:checked::before {
+	transform: scale(1);
+}
+
+input[type='checkbox']:focus-visible {
+	outline: max(2px, 0.15em) solid currentColor;
+	outline-offset: max(2px, 0.15em);
+}
+
+select {
+	appearance: none;
+	background: transparent;
+	background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+	background-repeat: no-repeat;
+	background-position-x: 100%;
+	background-position-y: 8px;
+	padding-right: 2rem;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+	input[type='checkbox']::before {
+		box-shadow: inset 1em 1em var(--form-control-color);
+		filter: invert(1);
+	}
+	select {
+		background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+	}
 }

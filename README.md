@@ -80,7 +80,7 @@ This application is a demo to practice my skills using Next.js and Tailwind CSS.
 <!-- LICENSE -->
 ## License
 
-Distributed under the **MIT License**. See [`LICENSE`](https://github.com/cosmoart/todoos/blob/main/LICENSEE) for more information.
+Distributed under the **MIT License**. See [`LICENSE`](https://github.com/cosmoart/todoos/blob/main/LICENSE) for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
