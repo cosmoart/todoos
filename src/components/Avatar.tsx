@@ -2,15 +2,14 @@ import Image from 'next/image'
 import { loginWithGithub, logout } from '../../firebase/client'
 import useUser from '@/hooks/useUser'
 import avatarIMG from '@/assets/images/avatar.svg'
+import { toast } from 'sonner'
 
 export default function Avatar (): JSX.Element {
 	const user = useUser()
 
 	async function handleLogin (): Promise<any> {
 		loginWithGithub()
-			.catch(err => {
-				console.error(err)
-			})
+			.catch(() => toast.error('Error trying to login with Github'))
 		return null
 	}
 

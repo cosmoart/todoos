@@ -5,7 +5,6 @@ export default function Document (): JSX.Element {
 		<Html lang='en'>
 			<Head>
 				<meta charSet='UTF-8' />
-				<meta name='viewport' content='width=device-width, initial-scale=1.0' />
 				<link rel='shortcut icon' href='favicon.svg' type='image/svg+xml' />
 				<meta name='description' content='A to-dos app for save and organize your tasks. You can use it without register.' />
 				<meta name='robots' content='index, follow' />

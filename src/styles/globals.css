@@ -124,12 +124,10 @@ select {
 	padding-right: 2rem;
 }
 
-@media screen and (prefers-color-scheme: dark) {
-	input[type='checkbox']::before {
-		box-shadow: inset 1em 1em var(--form-control-color);
-		filter: invert(1);
-	}
-	select {
-		background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
-	}
+.dark input[type='checkbox']::before {
+	box-shadow: inset 1em 1em var(--form-control-color);
+	filter: invert(1);
+}
+.dark select {
+	background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
 }

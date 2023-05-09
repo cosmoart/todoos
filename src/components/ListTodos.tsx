@@ -21,36 +21,15 @@ export default function ListTodos (): JSX.Element {
 	const [todos, setTodos] = useState<Todo[]>([])
 
 	useEffect(() => {
-		// Listen for changes to the items key in localStorage
-		const listener = (): void => {
-			console.log('localStorage changed!')
-
-			const newItems = JSON.parse(localStorage.getItem('todos') ?? '{}')
-			if (newItems !== todos) {
-				// The items key has been changed, so run your code
-				setTodos(newItems)
-			}
-		}
-
-		// Set up the event listeners
-		window.addEventListener('storage', listener)
-
-		// Clean up
-		return () => {
-			window.removeEventListener('storage', listener)
-		}
-	}, [todos])
-
-	useEffect(() => {
-		setLoading({ ...loading, todos: true })
+		setLoading(loading => ({ ...loading, todos: true }))
 		if (user != null) {
 			listenAllTodos(user.uid, setTodos)
 				.catch(() => { toast.error('Error loading todos') })
-				.finally(() => { setLoading({ ...loading, todos: false }) })
+				.finally(() => { setLoading(loading => ({ ...loading, todos: false })) })
 		}
 		if (user === null) {
 			setTodos(Object.values(JSON.parse(localStorage.getItem('todos') ?? '{}')))
-			setLoading({ ...loading, todos: false })
+			setLoading(loading => ({ ...loading, todos: false }))
 		}
 	}, [user])
 
@@ -102,7 +81,7 @@ export default function ListTodos (): JSX.Element {
 
 	if (user === undefined || loading.todos) {
 		return (
-			<div className='pt-16 px-3  mt-8 text-center       min-h-[calc(100vh_-_15.5rem)]'>
+			<div className='pt-16 px-3  mt-8 text-center min-h-[calc(100vh_-_15.5rem)]'>
 				<Image className='m-auto w-10 invert dark:invert-0' src={loader} alt='Loading..' title='Loading...' />
 			</div>
 		)
@@ -110,7 +89,7 @@ export default function ListTodos (): JSX.Element {
 
 	if (todos.length < 1) {
 		return (
-			<div className='pt-16 px-3  mt-8 text-center       min-h-[calc(100vh_-_15.5rem)]'>
+			<div className='pt-16 px-3  mt-8 text-center min-h-[calc(100vh_-_15.5rem)]'>
 				<p>No todos :c</p>
 			</div>
 		)
@@ -120,12 +99,12 @@ export default function ListTodos (): JSX.Element {
 		<DragDropContext onDragEnd={handleOnDragEnd}>
 			<Droppable droppableId='characters'>
 				{(provided) => (
-					<ul className='drag-sort-enable todo-list      min-h-[calc(100vh_-_15.5rem)] flex flex-col gap-2 w-full mt-8' {...provided.droppableProps} ref={provided.innerRef}>
+					<ul className='drag-sort-enable todo-list min-h-[calc(100vh_-_15.5rem)] flex flex-col w-full mt-8' {...provided.droppableProps} ref={provided.innerRef}>
 						{todos.map((todo, index) => {
 							return (
 								<Draggable key={todo.id} draggableId={todo.id + ''} index={index} >
 									{(provided) => (
-										<li key={todo.id} ref={provided.innerRef} {...provided.draggableProps} className={`flex items-center shadow gap-2 rounded px-6 py-3 justify-between transition-colors ${todo.completed ? 'bg-green-500 ' : 'dark:bg-zinc-800 bg-white'}`} id={'todo-' + todo.id}>
+										<li key={todo.id} ref={provided.innerRef} {...provided.draggableProps} className={`flex items-center shadow gap-2 rounded px-6 py-3 mb-2 justify-between transition-colors ${todo.completed ? 'bg-green-500 ' : 'dark:bg-zinc-800 bg-white'}`} id={'todo-' + todo.id}>
 											<div className='flex gap-4 w-full items-center'>
 												<input type='checkbox'
 													className={`cursor-pointer w-6 aspect-square ${loading.completed ? 'opacity-80' : ''}`}

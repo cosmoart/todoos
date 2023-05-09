@@ -44,7 +44,6 @@ export const onAuthStateChanged = async (onChange: any): Promise<any> => {
 export const loginWithGithub = async (): Promise<any> => {
 	const provider = new firebase.auth.GithubAuthProvider()
 	return await firebase.auth().signInWithPopup(provider)
-	// .catch((error) => TODO
 }
 
 export const logout = (): void => {
@@ -65,12 +64,16 @@ export const addTodo = async ({ todo, uid }: crudTypes): Promise<any> => {
 
 export const listenAllTodos = async (uid: crudTypes['uid'], callback: any): Promise<any> => {
 	return await new Promise((resolve, reject) => {
-		onValue(ref(db, `todo/${uid}`), (snapshot) => {
-			const data = snapshot.val()
-			const arrayData = Object.values(data ?? {})
-			callback(arrayData)
-			resolve(arrayData)
-		})
+		try {
+			onValue(ref(db, `todo/${uid}`), (snapshot) => {
+				const data = snapshot.val()
+				const arrayData = Object.values(data ?? {})
+				callback(arrayData)
+				resolve(arrayData)
+			})
+		} catch (err) {
+			reject(err); console.log(err)
+		}
 	})
 }
 

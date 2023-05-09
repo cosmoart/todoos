@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { onAuthStateChanged } from '../../firebase/client'
+import { toast } from 'sonner'
 
 export interface userLogged {
 	avatar: string
@@ -23,6 +24,7 @@ export default function useUser (): User {
 
 	useEffect(() => {
 		onAuthStateChanged(setUser)
+			.catch(() => toast.error('Failed to login'))
 	}, [])
 
 	return user

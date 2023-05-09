@@ -40,12 +40,8 @@ export default function Form (): JSX.Element {
 				},
 				uid: user?.uid ?? 'null'
 			})
-				.catch(() => {
-					toast.error('Error adding todo')
-				})
-				.finally(() => {
-					setLoading(false)
-				})
+				.catch(() => toast.error('Error adding todo'))
+				.finally(() => { setLoading(false) })
 		}
 	}
 

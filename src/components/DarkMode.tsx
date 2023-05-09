@@ -23,8 +23,8 @@ export default function DarkModeBtn (): JSX.Element {
 			onClick={() => { setDarkMode(!darkMode) }}
 		>
 			{darkMode
-				? <Image src={LightIcon} alt='Light mode icon' width={24} height={24} className='dark:invert' />
-				: <Image src={DarkIcon} alt='Dark mode icon' width={24} height={24} className='dark:invert' />
+				? <Image src={LightIcon} alt='Light mode icon' width={22} height={22} className='dark:invert transition-all duration-400 hover:rotate-90 hover:scale-105' />
+				: <Image src={DarkIcon} alt='Dark mode icon' width={22} height={22} className='dark:invert  hover:scale-105' />
 			}
 		</button>
 	)

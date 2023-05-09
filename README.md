@@ -71,6 +71,7 @@ This application is a demo to practice my skills using Next.js and Tailwind CSS.
 * [React.js](https://reactjs.org/)
 * [Firebase](https://firebase.google.com/) - Authentication and database
 * [Tailwind CSS](https://tailwindcss.com/) - CSS framework
+* [Sonner](https://sonner.emilkowal.ski) - For toast notifications
 * [Vercel](https://vercel.com/) - Deployment and hosting
 * [TypeScript](https://www.typescriptlang.org/)
 
