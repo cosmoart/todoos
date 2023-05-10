@@ -8,6 +8,7 @@ export default function Document (): JSX.Element {
 				<link rel='shortcut icon' href='favicon.svg' type='image/svg+xml' />
 				<meta name='description' content='A to-dos app for save and organize your tasks. You can use it without register.' />
 				<meta name='robots' content='index, follow' />
+				<link rel='manifest' href='/manifest.json'></link>
 
 				{/* <!-- Facebook Meta Tags --> */}
 				<meta property='og:url' content='https://todoos.vercel.app' />

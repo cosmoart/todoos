@@ -81,7 +81,7 @@ export default function ListTodos (): JSX.Element {
 
 	if (user === undefined || loading.todos) {
 		return (
-			<div className='pt-16 px-3  mt-8 text-center min-h-[calc(100vh_-_15.5rem)]'>
+			<div className='pt-16 px-3  mt-8 text-center'>
 				<Image className='m-auto w-10 invert dark:invert-0' src={loader} alt='Loading..' title='Loading...' />
 			</div>
 		)
@@ -89,7 +89,7 @@ export default function ListTodos (): JSX.Element {
 
 	if (todos.length < 1) {
 		return (
-			<div className='pt-16 px-3  mt-8 text-center min-h-[calc(100vh_-_15.5rem)]'>
+			<div className='pt-16 px-3  mt-8 text-center'>
 				<p>No todos :c</p>
 			</div>
 		)
@@ -99,7 +99,7 @@ export default function ListTodos (): JSX.Element {
 		<DragDropContext onDragEnd={handleOnDragEnd}>
 			<Droppable droppableId='characters'>
 				{(provided) => (
-					<ul className='drag-sort-enable todo-list min-h-[calc(100vh_-_15.5rem)] flex flex-col w-full mt-8' {...provided.droppableProps} ref={provided.innerRef}>
+					<ul className='drag-sort-enable todo-list flex flex-col w-full mt-8' {...provided.droppableProps} ref={provided.innerRef}>
 						{todos.map((todo, index) => {
 							return (
 								<Draggable key={todo.id} draggableId={todo.id + ''} index={index} >

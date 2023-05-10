@@ -1,15 +1,14 @@
-import { Inter } from 'next/font/google'
 import Form from '@/components/Form'
 import ListTodos from '@/components/ListTodos'
-import Navbar from '@/components/NavBar'
 import Head from 'next/head'
 import { Toaster } from 'sonner'
-import Footer from '@/components/Footer'
-import DarkModeBtn from '@/components/DarkMode'
-
-const inter = Inter({ subsets: ['latin'] })
+import { useEffect } from 'react'
 
 export default function Home (): JSX.Element {
+	useEffect(() => {
+		void navigator.serviceWorker.register('/service-worker.js')
+	}, [])
+
 	return (
 		<>
 			<Head>
@@ -17,13 +16,8 @@ export default function Home (): JSX.Element {
 				<meta name='viewport' content='width=device-width, initial-scale=1.0' />
 			</Head>
 			<Toaster position='bottom-right' richColors />
-			<div className={`pt-6 text-zinc-900 dark:text-white max-w-5xl mx-auto w-11/12 ${inter.className}`}>
-				<Navbar />
-				<Form />
-				<ListTodos />
-				<Footer />
-				<DarkModeBtn />
-			</div>
+			<Form />
+			<ListTodos />
 		</>
 	)
 }

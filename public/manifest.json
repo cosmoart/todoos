@@ -1,0 +1,16 @@
+{
+	"name": "Todoos - Task Manager",
+	"short_name": "Todoos",
+	"start_url": "/",
+	"display": "standalone",
+	"theme_color": "#ffffff",
+	"background_color": "#ffffff",
+	"icons": [
+		{
+			"src": "favicon.svg",
+			"sizes": "144x144",
+			"type": "image/svg+xml",
+			"purpose": "any"
+		}
+	]
+}
