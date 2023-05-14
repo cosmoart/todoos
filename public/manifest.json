@@ -1,10 +1,8 @@
 {
+	"manifest_version": 2,
 	"name": "Todoos - Task Manager",
 	"short_name": "Todoos",
-	"start_url": "/",
-	"display": "standalone",
-	"theme_color": "#ffffff",
-	"background_color": "#ffffff",
+	"description": "A simple task manager",
 	"icons": [
 		{
 			"src": "favicon.svg",
@@ -12,5 +10,10 @@
 			"type": "image/svg+xml",
 			"purpose": "any"
 		}
-	]
+	],
+	"display": "standalone",
+	"theme_color": "#ffffff",
+	"background_color": "#ffffff",
+	"start_url": "/",
+	"scope": "/"
 }

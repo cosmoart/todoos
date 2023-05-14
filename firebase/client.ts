@@ -1,5 +1,5 @@
 import firebase from 'firebase/compat/app'
-import { getDatabase, ref, set, get, onValue } from 'firebase/database'
+import { getDatabase, ref, set, update, get, onValue } from 'firebase/database'
 import { getAnalytics } from 'firebase/analytics'
 import 'firebase/compat/auth'
 
@@ -22,10 +22,15 @@ interface crudTypes {
 		text: string
 		completed: boolean
 	}
+	todos?: Array<{
+		text: string
+		completed: boolean
+		id: number | string
+	}>
 }
 
 const app = firebase.initializeApp(firebaseConfig)
-const analytics = Boolean(app.name) && typeof window !== 'undefined' ? getAnalytics(app) : undefined
+const analytics = app.name && typeof window !== 'undefined' ? getAnalytics(app) : undefined
 const db = getDatabase(app)
 
 // Login with Github
@@ -72,13 +77,17 @@ export const listenAllTodos = async (uid: crudTypes['uid'], callback: any): Prom
 				resolve(arrayData)
 			})
 		} catch (err) {
-			reject(err); console.log(err)
+			reject(err)
 		}
 	})
 }
 
 export const updateTodo = async ({ id, uid, todo }: crudTypes): Promise<any> => {
-	await set(ref(db, `todo/${uid}/${id ?? ''}`), todo)
+	await update(ref(db, `todo/${uid}/${id ?? ''}`), todo)
+}
+
+export const updateAllTodos = async ({ uid, todos }: crudTypes): Promise<any> => {
+	await update(ref(db, `todo/${uid}`), todos)
 }
 
 export const deleteTodo = async ({ id, uid }: crudTypes): Promise<any> => {

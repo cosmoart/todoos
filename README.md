@@ -42,8 +42,6 @@
 
 This application is a demo to practice my skills using Next.js and Tailwind CSS. It includes features such as dark mode, todos storage and authentication, and is built with a responsive design that adapts to different screen sizes. The code is written in TypeScript and Firebase is used for authentication and database. I made this project following a [course](https://www.youtube.com/playlist?list=PLV8x_i1fqBw1VR86y4C72xMGJ8ifjBwJ6) by [Midudev](https://www.youtube.com/@midudev).
 
-<p align="right"><a href="#top">⬆ Back to top</a></p>
-
 
 <!-- SCREENSHOTS -->
 ## Screenshots
@@ -83,7 +81,6 @@ This application is a demo to practice my skills using Next.js and Tailwind CSS.
 
 Distributed under the **MIT License**. See [`LICENSE`](https://github.com/cosmoart/todoos/blob/main/LICENSE) for more information.
 
-<p align="right"><a href="#top">⬆ Back to top</a></p>
 
 <!-- KNOWGLEDGEMENTS -->
 

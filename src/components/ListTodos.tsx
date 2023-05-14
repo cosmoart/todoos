@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { listenAllTodos, deleteTodo, updateTodo } from '../../firebase/client'
+import { listenAllTodos, deleteTodo, updateTodo, updateAllTodos } from '../../firebase/client'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import useUser from '@/hooks/useUser'
 
@@ -11,7 +11,7 @@ import loader from '@/assets/images/loader.svg'
 import { toast } from 'sonner'
 
 export default function ListTodos (): JSX.Element {
-	const [loading, setLoading] = useState({ todos: true, delete: false, completed: false })
+	const [loading, setLoading] = useState({ todos: true, delete: false, completed: false, order: false })
 	const user = useUser()
 	interface Todo {
 		id: string
@@ -47,7 +47,11 @@ export default function ListTodos (): JSX.Element {
 			setTodos(Object.values(updatedTodos))
 		} else {
 			setLoading({ ...loading, completed: true })
-			updateTodo({ id: todo.id, uid: user?.uid ?? '', todo: { ...todo, completed: !todo.completed } })
+			updateTodo({
+				id: todo.id,
+				uid: user?.uid ?? '',
+				todo: { ...todo, completed: !todo.completed }
+			})
 				.catch(() => { toast.error('Error updating todo') })
 				.finally(() => { setLoading({ ...loading, completed: false }) })
 		}
@@ -69,13 +73,28 @@ export default function ListTodos (): JSX.Element {
 	}
 
 	function handleOnDragEnd (result: any): void {
+		if (!result.destination) return
+
 		const items = Array.from(todos)
 		const [reorderedItem] = items.splice(result.source.index, 1)
 		items.splice(result.destination.index, 0, reorderedItem)
 
-		setTodos(items)
+		const itemsObject = items.reduce((acc, item) => {
+			acc[item.id] = item
+			return acc
+		}, {})
+
 		if (user === null) {
 			localStorage.setItem('todos', JSON.stringify(items))
+			setTodos(items)
+		} else {
+			if (!loading.order) {
+				setLoading({ ...loading, order: true })
+				updateAllTodos({ uid: user?.uid ?? '', todos: itemsObject })
+					.then(() => { setTodos(items) })
+					.catch(() => { toast.error('Error reordering todos') })
+					.finally(() => { setLoading({ ...loading, order: false }) })
+			}
 		}
 	}
 
@@ -96,7 +115,7 @@ export default function ListTodos (): JSX.Element {
 	}
 
 	return (
-		<DragDropContext onDragEnd={handleOnDragEnd}>
+		<DragDropContext onDragEnd={handleOnDragEnd} >
 			<Droppable droppableId='characters'>
 				{(provided) => (
 					<ul className='drag-sort-enable todo-list flex flex-col w-full mt-8' {...provided.droppableProps} ref={provided.innerRef}>
@@ -120,7 +139,7 @@ export default function ListTodos (): JSX.Element {
 													onClick={() => { handleDelete(todo) }}>
 													<Image src={deleteIcon} alt='Delete' width={24} height={24} className='dark:invert group-hover:invert transition-all ' />
 												</button>
-												<div {...provided.dragHandleProps} className='px-2 py-2 rounded transition-all hover:opacity-60'>
+												<div {...provided.dragHandleProps} className={`px-2 py-2 rounded transition-all hover:opacity-60 ${loading.order ? 'opacity-80 pointer-events-none' : ''}`}>
 													<Image src={reorderIcon} alt='Reorder' width={24} height={24} className='dark:invert' id='reorder' />
 												</div>
 											</div>

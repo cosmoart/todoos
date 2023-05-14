@@ -19,7 +19,7 @@ export default function DarkModeBtn (): JSX.Element {
 
 	return (
 		<button
-			className='absolute top-0 right-0 p-4'
+			className='absolute top-0 right-0 p-3 lg:p-4'
 			onClick={() => { setDarkMode(!darkMode) }}
 		>
 			{darkMode
